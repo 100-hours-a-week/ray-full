@@ -1,23 +1,21 @@
-package org.example.asset;
-
-import org.example.asset.Asset;
+package org.example.item;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Stock extends Asset {
-    public Stock(String n, int p, int c) {
+    public Stock(int change) {
         this.name = name;
         this.price = price;
-        this.change = c;
+        this.change = change;
         Timer scheduler = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 if (Math.random() <= 0.55) {
-                    price += c;
+                    price += change;
                 } else {
-                    price -= c;
+                    price -= change;
                 }
             }
         };

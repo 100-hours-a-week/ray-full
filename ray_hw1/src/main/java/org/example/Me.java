@@ -1,7 +1,9 @@
 package org.example;
 
-import org.example.asset.Asset;
-import org.example.asset.Building;
+import org.example.item.Asset;
+import org.example.item.Building;
+import org.example.item.Stock;
+import org.example.data.AssetInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +11,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Me {
-    public int money = 0;
-    public int basicMakeMoney = 1;
-    public List<Asset> myAsset = new ArrayList<>();
+    private int money = 0;
+    private int basicMakeMoney = 1;
+    private List<Asset> myAsset = new ArrayList<>();
     public Me(){
         Timer scheduler = new Timer();
         TimerTask task = new TimerTask() {
@@ -39,14 +41,14 @@ public class Me {
             System.out.println("돈이 부족합니다! 아직 거지군요..");
             return;
         }
-        Building building = new Building(assetInfo.name, assetInfo.price, assetInfo.change);
-        myAsset.add(building);
+        Stock stock = new Stock(assetInfo.change);
+        myAsset.add(stock);
         takeMoney(assetInfo.price);
         System.out.println("주식 구매 성공!");
     }
     public void sellAsset(int n){
         Asset asset = myAsset.get(n);
-        makeMoney(asset.price);
+        makeMoney(asset.getPrice());
         System.out.println("자산 판매 성공!");
         myAsset.remove(n);
     }

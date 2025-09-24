@@ -1,9 +1,7 @@
-package org.example.asset;
-
-import org.example.Item;
+package org.example.item;
 
 public class Asset extends Item {
-    public int change;
+    protected int change;
 
     public void printInfo(){
         System.out.println(name+ " (판매가 : " + price+ ")");
