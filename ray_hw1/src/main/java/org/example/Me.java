@@ -41,7 +41,7 @@ public class Me {
             System.out.println("돈이 부족합니다! 아직 거지군요..");
             return;
         }
-        Stock stock = new Stock(assetInfo.change);
+        Stock stock = new Stock(assetInfo.name, assetInfo.price, assetInfo.change);
         myAsset.add(stock);
         takeMoney(assetInfo.price);
         System.out.println("주식 구매 성공!");

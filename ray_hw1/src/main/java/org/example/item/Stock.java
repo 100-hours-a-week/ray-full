@@ -4,9 +4,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Stock extends Asset {
-    public Stock(int change) {
+    public Stock(String name, int initialPrice, int change) {
         this.name = name;
-        this.price = price;
+        this.price = initialPrice;
         this.change = change;
         Timer scheduler = new Timer();
         TimerTask task = new TimerTask() {
