@@ -54,8 +54,4 @@ public class Employee extends Item implements Runnable{
         this.workTime = employInfo.getWorkTime();
         this.me = me;
     }
-
-    public void printInfo(){
-        System.out.println(name+ " (판매가 : " + price+ ", 근무시간 : " + workTime + ")");
-    }
 }
