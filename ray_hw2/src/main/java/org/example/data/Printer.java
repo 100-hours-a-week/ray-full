@@ -15,7 +15,8 @@ public class Printer {
         System.out.println("거지 게임! 은 돈을 벌어 부자가 되는 게임입니다. 게임을 시작하면 자동으로 3초당 1원을 벌 수 있습니다.");
         System.out.println("추가 자산을 구매하여 더 빨리 돈을 벌어보세요!");
         System.out.println("건물 : 3초당 일정 가격이 올라가는 건물을 구매해보세요!");
-        System.out.println("주식 : 3초당 일정 가격이 올라가는 주식을 구매해보세요! 단, 비밀스러운 확률로 가격이 떨어질 수 있습니다..\n");
+        System.out.println("주식 : 3초당 일정 가격이 올라가는 주식을 구매해보세요! 단, 비밀스러운 확률로 가격이 떨어질 수 있습니다..");
+        System.out.println("직원 고용 : 일정 시간 후 일을 마치고 돈을 벌어오는 직원을 구매해보세요! 단, 얼마를 벌어올지는 일을 마치기 전까지 모릅니다..\n");
     }
     public static void choiceList(){
         System.out.println("********************************************\n");
@@ -25,6 +26,8 @@ public class Printer {
         System.out.println("3. 건물 구매하기");
         System.out.println("4. 주식 구매하기");
         System.out.println("5. 자산 판매하기");
-        System.out.println("6. 게임 종료");
+        System.out.println("6. 직원 고용하기");
+        System.out.println("7. 직원이 벌어온 돈 확인하기");
+        System.out.println("8. 게임 종료");
     }
 }

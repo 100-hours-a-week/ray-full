@@ -1,25 +1,23 @@
-package org.example.item;
+package org.example.item.asset;
+
+import org.example.item.asset.Asset;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Stock extends Asset {
-    public Stock(int change) {
+public class Building extends Asset {
+    public Building(String name, int initialPrice, int change){
         this.name = name;
-        this.price = price;
+        this.price = initialPrice;
         this.change = change;
         Timer scheduler = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if (Math.random() <= 0.55) {
-                    price += change;
-                } else {
-                    price -= change;
-                }
+                price += change;
             }
         };
-        // 1초 후 3초마다 가격 변경
+        // 1초 후 3초마다 가격 상승
         scheduler.scheduleAtFixedRate(task, 1000, 3000);
     }
 }

@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.data.AssetInfo;
+import org.example.data.EmployInfo;
 import org.example.data.ItemInitializer;
 import org.example.data.Printer;
 
@@ -20,7 +21,9 @@ public class Main {
     private static final String BUY_BUILDING = "3";
     private static final String BUY_STOCK = "4";
     private static final String SELL_ASSET = "5";
-    private static final String EXIT_GAME = "6";
+    private static final String BUY_EMPLOYEE = "6";
+    private static final String CHECK_EMPLOYEE = "7";
+    private static final String EXIT_GAME = "8";
 
     public static void main(String[] args){
         String choice;
@@ -51,7 +54,12 @@ public class Main {
                 buyStock(me);
             }else if(choice.equals(SELL_ASSET)){
                 sellAsset(me);
-            }else if (choice.equals(EXIT_GAME)){
+            }else if(choice.equals(BUY_EMPLOYEE)){
+                buyEmployee(me);
+            }else if(choice.equals(CHECK_EMPLOYEE)){
+                me.printEmployeeResult();
+            }
+            else if (choice.equals(EXIT_GAME)){
                 me.printMoney();
                 System.out.println("게임을 종료합니다.");
                 break;
@@ -64,6 +72,7 @@ public class Main {
 
     private static List<AssetInfo> buildingInfo = ItemInitializer.building();
     private static List<AssetInfo> stockInfo = ItemInitializer.stock();
+    private static List<EmployInfo> employInfo = ItemInitializer.employ();
 
     private static void buyBuilding(Me me){
         while (true){
@@ -89,7 +98,6 @@ public class Main {
                 System.out.println("올바르게 입력해주세요.");
             }
         }
-
     }
 
     private static void buyStock(Me me){
@@ -134,6 +142,29 @@ public class Main {
             }
         }
 
-
+    }
+    private static void buyEmployee(Me me){
+        while (true){
+            System.out.println("********************************************\n");
+            System.out.println("고용 가능한 직원 목록입니다.\n");
+            System.out.println("0. 구매 안함");
+            int i  = 1;
+            for (EmployInfo e: employInfo
+            ) {
+                System.out.print(i + ". ");
+                e.printInfo();
+                i++;
+            }
+            System.out.println("고용하실 직원을 선택해주세요.");
+            String choice = sc.next();
+            if(choice.equals("0")){
+                System.out.println("직원 고용 종료");
+                return;
+            }else if(choice.equals("1")||choice.equals("2")||choice.equals("3")||choice.equals("4")||choice.equals("5")){
+                me.buyEmployee(employInfo.get(Integer.valueOf(choice)-1), me);
+            }else {
+                System.out.println("올바르게 입력해주세요.");
+            }
+        }
     }
 }

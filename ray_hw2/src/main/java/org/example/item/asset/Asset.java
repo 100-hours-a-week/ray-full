@@ -1,4 +1,6 @@
-package org.example.item;
+package org.example.item.asset;
+
+import org.example.item.Item;
 
 public class Asset extends Item {
     protected int change;

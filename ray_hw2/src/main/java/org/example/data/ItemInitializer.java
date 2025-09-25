@@ -23,4 +23,15 @@ public class ItemInitializer {
                 new AssetInfo("버크셔 해서웨이 A주", 10000, 500)
         );
     }
+
+    public static List<EmployInfo> employ(){
+        return List.of(
+                new EmployInfo("김철수", 50, 50,"근면성실하지만 센스는 없는 편" ),
+                new EmployInfo("최강록", 200, 150,"요리를 잘 조릴 것만 같은 편"),
+                new EmployInfo("유희왕", 5000, 2000,"마이웨이이고 자신만의 세계에 갇혀사는 편"),
+                new EmployInfo("이타치", 300, 200,"고용하면 중간에 딴길로 샐 것 만 같은 편.."),
+                new EmployInfo("에드워드 알릭", 1000, 500,"진리를 깨우친 것 같은 편!")
+        );
+    }
+
 }
