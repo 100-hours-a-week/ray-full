@@ -42,12 +42,6 @@ public class Employee extends Item implements Runnable{
         me.addEmployeeResult(name, result, total);
     }
 
-    public Employee(String name, int price, int workTime, Me me) {
-        this.name = name;
-        this.price = price;
-        this.workTime = workTime;
-        this.me = me;
-    }
     public Employee(EmployInfo employInfo, Me me) {
         this.name = employInfo.getName();
         this.price = employInfo.getPrice();
