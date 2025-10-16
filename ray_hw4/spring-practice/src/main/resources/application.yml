@@ -1,0 +1,3 @@
+jwt:
+  secret: qeofjimqrpijbqniperjwdfkomfevnjgipawfmkoerjioawfdkslkejvoi9519845146545648ewf654
+  expiration: 86400000
