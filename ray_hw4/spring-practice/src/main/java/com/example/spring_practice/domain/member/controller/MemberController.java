@@ -57,7 +57,7 @@ public class MemberController {
     @GetMapping("/nickname/duplicate-check")
     public ResponseEntity<ApiResponse<DuplicateCheckResponseDto>> passwordDuplicateCheck(@RequestParam("nickname")String nickname){
         return ResponseEntity.ok(ApiResponse.success(
-                Message.CHECK_DUPLICATE_EMAIL_SUCCESS, memberService.passwordDuplicateCheck(nickname)));
+                Message.CHECK_DUPLICATE_NICKNAME_SUCCESS, memberService.passwordDuplicateCheck(nickname)));
     }
 
     @GetMapping("/test")
