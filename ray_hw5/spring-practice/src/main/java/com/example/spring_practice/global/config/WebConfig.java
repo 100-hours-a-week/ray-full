@@ -22,6 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/users/signup",
                         "/users/email/duplicate-check",
                         "/users/nickname/duplicate-check",
+                        "/users/getalluser",
                         "/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**"
                 );
     }

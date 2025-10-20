@@ -58,7 +58,7 @@ public class MemberService {
         return member.get();
     }
 
-    public Object getAllMembers() {
+    public List<Member> getAllMembers() {
         return memberRepository.findAll();
     }
 
