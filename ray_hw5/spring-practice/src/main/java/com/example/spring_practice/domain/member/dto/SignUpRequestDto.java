@@ -28,6 +28,6 @@ public class SignUpRequestDto {
     @Size(max = 10, message = "닉네임은 최대 10자 까지 작성 가능합니다")
     @Pattern(regexp = "^\\S+$", message = "띄어쓰기를 없애주세요")
     private String nickname;
-    @Schema(description = "프로필 이미지", example = "file", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "프로필 이미지", type = "String", format = "binary", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private MultipartFile profileImage;
 }
