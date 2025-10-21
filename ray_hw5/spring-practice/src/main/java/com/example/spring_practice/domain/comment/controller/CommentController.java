@@ -7,6 +7,9 @@ import com.example.spring_practice.domain.comment.service.CommentService;
 import com.example.spring_practice.domain.member.service.MemberService;
 import com.example.spring_practice.global.response.ApiResponse;
 import com.example.spring_practice.global.response.Message;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +25,12 @@ public class CommentController {
     private final CommentService commentService;
     private final MemberService memberService;
 
-    // 댓글 등록
+    @Operation(summary = "댓글 등록", description = "특정 게시글에 댓글을 등록합니다.")
+    @Parameter(name = "postId", description = "게시글ID", example = "1", required = true)
     @PostMapping
     public ResponseEntity<ApiResponse<CommentIdResponseDto>> createComment(
             @PathVariable Long postId,
-            @RequestBody CommentRequestDto commentRequestDto) {
+            @Valid @RequestBody CommentRequestDto commentRequestDto) {
 
         Long currentMemberId = memberService.getCurrentMember().getMemberId();
         CommentIdResponseDto response = commentService.createComment(postId, commentRequestDto, currentMemberId);
@@ -36,12 +40,14 @@ public class CommentController {
                 .body(ApiResponse.success(Message.POST_COMMENT_SUCCESS, response));
     }
 
-    // 댓글 수정
+    @Operation(summary = "댓글 수정", description = "특정 댓글을 수정합니다.")
+    @Parameter(name = "postId", description = "게시글ID", example = "1", required = true)
+    @Parameter(name = "commentId", description = "댓글ID", example = "1", required = true)
     @PatchMapping("/{commentId}")
     public ResponseEntity<ApiResponse<CommentIdResponseDto>> editComment(
             @PathVariable Long postId,
             @PathVariable Long commentId,
-            @RequestBody CommentRequestDto commentRequestDto) {
+            @Valid @RequestBody CommentRequestDto commentRequestDto) {
 
         Long currentMemberId = memberService.getCurrentMember().getMemberId();
         CommentIdResponseDto response = commentService.updateComment(commentId, commentRequestDto, currentMemberId);
@@ -50,7 +56,9 @@ public class CommentController {
                 ApiResponse.success(Message.PATCH_COMMENT_SUCCESS, response));
     }
 
-    // 댓글 삭제
+    @Operation(summary = "댓글 삭제", description = "특정 댓글을 삭제합니다.")
+    @Parameter(name = "postId", description = "게시글ID", example = "1", required = true)
+    @Parameter(name = "commentId", description = "댓글ID", example = "1", required = true)
     @DeleteMapping("/{commentId}")
     public ResponseEntity<ApiResponse<Void>> deleteComment(
             @PathVariable Long postId,
