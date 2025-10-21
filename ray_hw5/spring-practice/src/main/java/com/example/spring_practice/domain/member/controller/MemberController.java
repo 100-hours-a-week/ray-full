@@ -52,23 +52,25 @@ public class MemberController {
     }
 
     @Operation(summary = "비밀번호 변경", description = "로그인한 사용자의 비밀번호를 변경합니다.")
-
+    @Parameter(name = "password", description = "변경할 비밀번호", required = true)
     @PatchMapping("/password")
-    public ResponseEntity<ApiResponse<Void>> editPassword(@RequestParam("password") @Parameter(description = "변경할 비밀번호", required = true)String password){
+    public ResponseEntity<ApiResponse<Void>> editPassword(@RequestParam("password") String password){
         memberService.editPassword(password);
         return ResponseEntity.ok(ApiResponse.success(Message.EDIT_PASSWORD_SUCCESS));
     }
 
     @Operation(summary = "이메일 중복 체크", description = "특정 이메일이 이미 등록된 이메일인지 확인합니다.")
+    @Parameter(name = "email", description = "중복 확인할 이메일", required = true)
     @GetMapping("/email/duplicate-check")
-    public ResponseEntity<ApiResponse<DuplicateCheckResponseDto>> emailDuplicateCheck(@RequestParam("email")@Parameter(description = "중복 확인할 이메일", required = true)String email){
+    public ResponseEntity<ApiResponse<DuplicateCheckResponseDto>> emailDuplicateCheck(@RequestParam("email")String email){
         return ResponseEntity.ok(ApiResponse.success(
                 Message.CHECK_DUPLICATE_EMAIL_SUCCESS, memberService.emailDuplicateCheck(email)));
     }
 
     @Operation(summary = "닉네임 중복 체크", description = "특정 닉네임이 이미 등록된 닉네임인지 확인합니다.")
+    @Parameter(name = "nickname", description = "중복 확인할 닉네임", required = true)
     @GetMapping("/nickname/duplicate-check")
-    public ResponseEntity<ApiResponse<DuplicateCheckResponseDto>> passwordDuplicateCheck(@RequestParam("nickname")@Parameter(description = "중복 확인할 닉네임", required = true)String nickname){
+    public ResponseEntity<ApiResponse<DuplicateCheckResponseDto>> passwordDuplicateCheck(@RequestParam("nickname")String nickname){
         return ResponseEntity.ok(ApiResponse.success(
                 Message.CHECK_DUPLICATE_NICKNAME_SUCCESS, memberService.passwordDuplicateCheck(nickname)));
     }
