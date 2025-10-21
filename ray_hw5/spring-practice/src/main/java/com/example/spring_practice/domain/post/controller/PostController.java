@@ -39,7 +39,7 @@ public class PostController {
     }
 
     @Operation(summary = "게시글 상세보기", description = "게시글 상세정보를 불러옵니다.")
-    @Parameter(name = "postId", description = "게시글 ID", example = "1")
+    @Parameter(name = "postId", description = "게시글 ID", example = "1", required = true)
     @GetMapping("/{postId}")
     public ResponseEntity<ApiResponse<PostResponseDto>> getPostDetail(
             @PathVariable Long postId) {
@@ -64,7 +64,7 @@ public class PostController {
     }
 
     @Operation(summary = "게시글 수정", description = "게시글을 수정합니다.")
-    @Parameter(name = "postId", description = "게시글 ID", example = "1")
+    @Parameter(name = "postId", description = "게시글 ID", example = "1", required = true)
     @PatchMapping(value = "/{postId}", consumes = "multipart/form-data")
     public ResponseEntity<ApiResponse<PostIdResponseDto>> editPost(
             @PathVariable Long postId,
@@ -79,7 +79,7 @@ public class PostController {
     }
 
     @Operation(summary = "게시글 삭제", description = "게시글을 삭제합니다.")
-    @Parameter(name = "postId", description = "게시글 ID", example = "1")
+    @Parameter(name = "postId", description = "게시글 ID", example = "1", required = true)
     @DeleteMapping("/{postId}")
     public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long postId) {
         Long currentMemberId = memberService.getCurrentMember().getMemberId();
