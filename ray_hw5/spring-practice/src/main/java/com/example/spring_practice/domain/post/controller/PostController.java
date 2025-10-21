@@ -9,6 +9,10 @@ import com.example.spring_practice.domain.post.dto.PostSummaryResponseDto;
 import com.example.spring_practice.domain.post.service.PostService;
 import com.example.spring_practice.global.response.ApiResponse;
 import com.example.spring_practice.global.response.Message;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +24,12 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/post")
+@SecurityRequirement(name = "bearerAuth")
 public class PostController {
     private final PostService postService;
     private final MemberService memberService;
 
+    @Operation(summary = "게시글 목록 불러오기", description = "게시글 목록을 불러옵니다.")
     @GetMapping
     public ResponseEntity<ApiResponse<List<PostSummaryResponseDto>>> getPostList() {
         List<PostSummaryResponseDto> posts = postService.getPostList();
@@ -32,6 +38,8 @@ public class PostController {
         );
     }
 
+    @Operation(summary = "게시글 상세보기", description = "게시글 상세정보를 불러옵니다.")
+    @Parameter(name = "postId", description = "게시글 ID", example = "1")
     @GetMapping("/{postId}")
     public ResponseEntity<ApiResponse<PostResponseDto>> getPostDetail(
             @PathVariable Long postId) {
@@ -42,9 +50,10 @@ public class PostController {
         );
     }
 
+    @Operation(summary = "게시글 등록", description = "게시글을 등록합니다.")
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<ApiResponse<PostIdResponseDto>> createPost(
-            @ModelAttribute PostRequestDto postRequestDto) {
+            @Valid @ModelAttribute PostRequestDto postRequestDto) {
 
         Member currentMember = memberService.getCurrentMember();
 
@@ -54,10 +63,12 @@ public class PostController {
                         postService.createPost(postRequestDto, currentMember)));
     }
 
+    @Operation(summary = "게시글 수정", description = "게시글을 수정합니다.")
+    @Parameter(name = "postId", description = "게시글 ID", example = "1")
     @PatchMapping(value = "/{postId}", consumes = "multipart/form-data")
     public ResponseEntity<ApiResponse<PostIdResponseDto>> editPost(
             @PathVariable Long postId,
-            @ModelAttribute PostRequestDto postRequestDto) {
+            @Valid @ModelAttribute PostRequestDto postRequestDto) {
 
         Long currentMemberId = memberService.getCurrentMember().getMemberId();
 
@@ -67,6 +78,8 @@ public class PostController {
         );
     }
 
+    @Operation(summary = "게시글 삭제", description = "게시글을 삭제합니다.")
+    @Parameter(name = "postId", description = "게시글 ID", example = "1")
     @DeleteMapping("/{postId}")
     public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long postId) {
         Long currentMemberId = memberService.getCurrentMember().getMemberId();
