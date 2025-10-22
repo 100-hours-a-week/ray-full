@@ -20,6 +20,7 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
     private final ImageService imageService;
+    private final MemberDtoConverter memberDtoConverter;
     public void signUp(SignUpRequestDto signUpRequestDto) {
         Member member = new Member(signUpRequestDto.getEmail(), signUpRequestDto.getPassword(), signUpRequestDto.getNickname());
         if(signUpRequestDto.getProfileImage()!=null){
@@ -40,7 +41,7 @@ public class AuthService {
         }
 
         String token = jwtUtil.generateToken(member.get().getEmail());
-        return MemberDtoConverter.toJwtTokenResponseDto(token);
+        return memberDtoConverter.toJwtTokenResponseDto(token);
     }
 
     public Member getCurrentMember() {

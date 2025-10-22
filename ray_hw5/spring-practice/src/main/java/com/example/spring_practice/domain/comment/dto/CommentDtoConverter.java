@@ -1,10 +1,11 @@
 package com.example.spring_practice.domain.comment.dto;
 
-import com.example.spring_practice.domain.comment.dto.CommentResponseDto;
 import com.example.spring_practice.domain.comment.entity.Comment;
+import org.springframework.stereotype.Component;
 
-public class CommentDtoConvertor {
-    public static CommentResponseDto toCommentResponseDto(Comment comment, Long currentMemberId){
+@Component
+public class CommentDtoConverter {
+    public CommentResponseDto toCommentResponseDto(Comment comment, Long currentMemberId){
         return new CommentResponseDto(
                 comment.getCommentId(),
                 comment.getMember().getNickname(),
@@ -13,7 +14,7 @@ public class CommentDtoConvertor {
                 comment.getMember().getMemberId().equals(currentMemberId));
     }
 
-    public static CommentIdResponseDto toCommentIdResponseDto(Long commentId){
+    public CommentIdResponseDto toCommentIdResponseDto(Long commentId){
         return new CommentIdResponseDto(commentId);
     }
 }

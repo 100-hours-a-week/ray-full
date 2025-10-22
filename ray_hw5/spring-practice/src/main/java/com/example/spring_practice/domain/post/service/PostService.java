@@ -7,10 +7,8 @@ import com.example.spring_practice.domain.post.repository.PostRepository;
 import com.example.spring_practice.domain.shared.ImageService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,12 +16,13 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
     private final ImageService imageService;
+    private final PostDtoConverter postDtoConverter;
 
     public List<PostSummaryResponseDto> getPostList() {
         List<Post> posts = postRepository.findAll();
 
         return posts.stream()
-                .map(PostDtoConvertor::toPostSummaryResponseDto)
+                .map(postDtoConverter::toPostSummaryResponseDto)
                 .collect(Collectors.toList());
     }
 
@@ -32,7 +31,7 @@ public class PostService {
                 .orElseThrow(RuntimeException::new);
         post.increaseViewCount();
 
-        return PostDtoConvertor.toPostResponseDto(post, currentMemberId);
+        return postDtoConverter.toPostResponseDto(post, currentMemberId);
     }
 
     public PostIdResponseDto createPost(PostRequestDto postRequestDto, Member currentMember) {
@@ -40,7 +39,7 @@ public class PostService {
         if(postRequestDto.getPostImage() != null){
             post.setImgUrl(imageService.saveImg(postRequestDto.getPostImage()));
         }
-        return PostDtoConvertor.toPostIdResponseDto(postRepository.save(post).getPostId());
+        return postDtoConverter.toPostIdResponseDto(postRepository.save(post).getPostId());
     }
 
     public PostIdResponseDto editPost(Long postId, PostRequestDto postRequestDto, Long currentMemberId) {
@@ -54,7 +53,7 @@ public class PostService {
         if(postRequestDto.getPostImage() != null){
             post.setImgUrl(imageService.saveImg(postRequestDto.getPostImage()));
         }
-        return PostDtoConvertor.toPostIdResponseDto(post.getPostId());
+        return postDtoConverter.toPostIdResponseDto(post.getPostId());
     }
 
     public void deletePost(Long postId, Long currentMemberId) {

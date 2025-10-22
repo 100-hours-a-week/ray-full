@@ -19,9 +19,10 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final ImageService imageService;
     private final AuthService authService;
+    private final MemberDtoConverter memberDtoConverter;
 
     public ProfileResponseDto getMyProfile() {
-        return MemberDtoConverter.toProfileResponseDto(authService.getCurrentMember());
+        return memberDtoConverter.toProfileResponseDto(authService.getCurrentMember());
     }
 
     public void editPassword(String password) {
@@ -38,10 +39,10 @@ public class MemberService {
     }
 
     public DuplicateCheckResponseDto emailDuplicateCheck(String email) {
-        return MemberDtoConverter.toDuplicateCheckResponseDto(memberRepository.existsByEmail(email));
+        return memberDtoConverter.toDuplicateCheckResponseDto(memberRepository.existsByEmail(email));
     }
 
     public DuplicateCheckResponseDto passwordDuplicateCheck(String nickname) {
-        return MemberDtoConverter.toDuplicateCheckResponseDto(memberRepository.existsByNickname(nickname));
+        return memberDtoConverter.toDuplicateCheckResponseDto(memberRepository.existsByNickname(nickname));
     }
 }
