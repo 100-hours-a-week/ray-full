@@ -1,13 +1,8 @@
 package com.example.spring_practice.domain.member.entity;
 
-import com.example.spring_practice.domain.comment.entity.Comment;
-import com.example.spring_practice.domain.post.entity.Post;
-import com.example.spring_practice.domain.post.entity.PostLike;
+import com.example.spring_practice.global.response.CustomException;
+import com.example.spring_practice.global.response.ErrorCode;
 import lombok.Getter;
-
-import javax.crypto.interfaces.PBEKey;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 public class Member {
@@ -24,15 +19,20 @@ public class Member {
     }
 
     public void setMemberId(Long id){
+        if( this.memberId != null || id == null || id < 0){
+            throw new CustomException(ErrorCode.BAD_ID_SET_TRY);
+        }
         this.memberId = id;
     }
-    public void setProfileImgUrl(String profileImgUrl) { this.profileImgUrl = profileImgUrl; }
 
-    public void setPassword(String password) {
+    public void updateImageUrl(String profileImgUrl) { this.profileImgUrl = profileImgUrl; }
+
+    public void changePassword(String password) {
+
         this.password = password;
     }
 
-    public void setNickname(String nickname) {
+    public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
 

@@ -38,7 +38,7 @@ public class PostService {
     public PostIdResponseDto createPost(PostRequestDto postRequestDto, Member currentMember) {
         Post post = new Post(postRequestDto, currentMember);
         if(postRequestDto.getPostImage() != null){
-            post.setImgUrl(imageService.saveImg(postRequestDto.getPostImage()));
+            post.updateImageUrl(imageService.saveImg(postRequestDto.getPostImage()));
         }
         return postDtoConverter.toPostIdResponseDto(postRepository.save(post).getPostId());
     }
@@ -49,10 +49,10 @@ public class PostService {
         if(!post.getMember().getMemberId().equals(currentMemberId)) {
             throw new CustomException(ErrorCode.NO_PERMISSION);
         }
-        post.setTitle(postRequestDto.getTitle());
-        post.setContent(postRequestDto.getContent());
+        post.updateTitle(postRequestDto.getTitle());
+        post.updateContent(postRequestDto.getContent());
         if(postRequestDto.getPostImage() != null){
-            post.setImgUrl(imageService.saveImg(postRequestDto.getPostImage()));
+            post.updateImageUrl(imageService.saveImg(postRequestDto.getPostImage()));
         }
         return postDtoConverter.toPostIdResponseDto(post.getPostId());
     }

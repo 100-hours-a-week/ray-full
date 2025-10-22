@@ -3,6 +3,8 @@ package com.example.spring_practice.domain.post.entity;
 import com.example.spring_practice.domain.comment.entity.Comment;
 import com.example.spring_practice.domain.member.entity.Member;
 import com.example.spring_practice.domain.post.dto.PostRequestDto;
+import com.example.spring_practice.global.response.CustomException;
+import com.example.spring_practice.global.response.ErrorCode;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -23,15 +25,19 @@ public class Post {
     private String imgUrl;
 
     public void setPostId(Long id){
+        if( this.postId != null || id == null || id < 0){
+            throw new CustomException(ErrorCode.BAD_ID_SET_TRY);
+        }
+
         this.postId = id;
     }
-    public void setTitle(String title){
+    public void updateTitle(String title){
         this.title = title;
     }
-    public void setContent(String content){
+    public void updateContent(String content){
         this.content = content;
     }
-    public void setImgUrl(String imgUrl){
+    public void updateImageUrl(String imgUrl){
         this.imgUrl = imgUrl;
     }
 

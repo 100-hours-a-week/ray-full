@@ -26,7 +26,7 @@ public class MemberService {
         }
         Member member = new Member(signUpRequestDto.getEmail(), signUpRequestDto.getPassword(), signUpRequestDto.getNickname());
         if(signUpRequestDto.getProfileImage()!=null){
-            member.setProfileImgUrl(imageService.saveImg(signUpRequestDto.getProfileImage()));
+            member.updateImageUrl(imageService.saveImg(signUpRequestDto.getProfileImage()));
         }
         memberRepository.save(member);
     }
@@ -36,15 +36,15 @@ public class MemberService {
     }
 
     public void editPassword(String password) {
-        authService.getCurrentMember().setPassword(password);
+        authService.getCurrentMember().changePassword(password);
     }
 
     public void editProfile(EditProfileRequestDto editProfileRequestDto) {
         if(editProfileRequestDto.getProfileImage() != null){
-            authService.getCurrentMember().setProfileImgUrl(imageService.saveImg(editProfileRequestDto.getProfileImage()));
+            authService.getCurrentMember().updateImageUrl(imageService.saveImg(editProfileRequestDto.getProfileImage()));
         }
         if(editProfileRequestDto.getNickname()!= null){
-            authService.getCurrentMember().setNickname(editProfileRequestDto.getNickname());
+            authService.getCurrentMember().updateNickname(editProfileRequestDto.getNickname());
         }
     }
 

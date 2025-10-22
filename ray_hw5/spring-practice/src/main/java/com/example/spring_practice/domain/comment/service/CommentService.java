@@ -47,7 +47,7 @@ public class CommentService {
             throw new CustomException(ErrorCode.NO_PERMISSION);
         }
 
-        comment.setContent(dto.getContent());
+        comment.updateContent(dto.getContent());
 
         return commentDtoConverter.toCommentIdResponseDto(comment.getCommentId());
     }
