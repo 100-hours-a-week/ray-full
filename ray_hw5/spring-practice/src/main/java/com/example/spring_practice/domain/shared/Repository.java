@@ -8,4 +8,5 @@ public interface Repository <T> {
     Optional<T> findById(Long id);
     List<T> findAll();
     void delete(T entity);
+    void deleteById(Long id);
 }
