@@ -17,65 +17,23 @@ import java.util.Optional;
 @AllArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final JwtUtil jwtUtil;
     private final ImageService imageService;
-    public void signUp(SignUpRequestDto signUpRequestDto) {
-        Member member = new Member(signUpRequestDto.getEmail(), signUpRequestDto.getPassword(), signUpRequestDto.getNickname());
-        if(signUpRequestDto.getProfileImage()!=null){
-            member.setProfileImgUrl(imageService.saveImg(signUpRequestDto.getProfileImage()));
-        }
-        memberRepository.save(member);
-    }
-
-    public JwtTokenResponseDto login(LoginRequestDto loginRequestDto) {
-        Optional<Member> member = memberRepository.findByEmail(loginRequestDto.getEmail());
-
-        if (member.isEmpty()) {
-                throw new RuntimeException("미회원가입");
-            }
-
-            if (!member.get().getPassword().equals(loginRequestDto.getPassword())) {
-                throw new RuntimeException("비밀번호 틀림");
-        }
-
-        String token = jwtUtil.generateToken(member.get().getEmail());
-        return new JwtTokenResponseDto(token);
-    }
-
-    public Member getCurrentMember() {
-        String email = AuthContext.getCurrentUserEmail();
-
-        if (email == null) {
-            throw new RuntimeException("로그인이 필요합니다");
-        }
-
-        Optional<Member> member = memberRepository.findByEmail(email);
-
-        if (member.isEmpty()) {
-            throw new RuntimeException("사용자를 찾을 수 없습니다");
-        }
-
-        return member.get();
-    }
-
-    public List<Member> getAllMembers() {
-        return memberRepository.findAll();
-    }
+    private final AuthService authService;
 
     public ProfileResponseDto getMyProfile() {
-        return MemberDtoConverter.toProfileResponseDto(getCurrentMember());
+        return MemberDtoConverter.toProfileResponseDto(authService.getCurrentMember());
     }
 
     public void editPassword(String password) {
-        getCurrentMember().setPassword(password);
+        authService.getCurrentMember().setPassword(password);
     }
 
     public void editProfile(EditProfileRequestDto editProfileRequestDto) {
         if(editProfileRequestDto.getProfileImage() != null){
-            getCurrentMember().setProfileImgUrl(imageService.saveImg(editProfileRequestDto.getProfileImage()));
+            authService.getCurrentMember().setProfileImgUrl(imageService.saveImg(editProfileRequestDto.getProfileImage()));
         }
         if(editProfileRequestDto.getNickname()!= null){
-            getCurrentMember().setNickname(editProfileRequestDto.getNickname());
+            authService.getCurrentMember().setNickname(editProfileRequestDto.getNickname());
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.spring_practice.domain.post.controller;
 
 import com.example.spring_practice.domain.member.entity.Member;
+import com.example.spring_practice.domain.member.service.AuthService;
 import com.example.spring_practice.domain.member.service.MemberService;
 import com.example.spring_practice.domain.post.dto.PostIdResponseDto;
 import com.example.spring_practice.domain.post.dto.PostRequestDto;
@@ -24,10 +25,9 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/post")
-@SecurityRequirement(name = "bearerAuth")
 public class PostController {
+    private final AuthService authService;
     private final PostService postService;
-    private final MemberService memberService;
 
     @Operation(summary = "게시글 목록 불러오기", description = "게시글 목록을 불러옵니다.")
     @GetMapping
@@ -43,7 +43,7 @@ public class PostController {
     @GetMapping("/{postId}")
     public ResponseEntity<ApiResponse<PostResponseDto>> getPostDetail(
             @PathVariable Long postId) {
-        Long currentMemberId = memberService.getCurrentMember().getMemberId();
+        Long currentMemberId = authService.getCurrentMember().getMemberId();
         PostResponseDto postDetail = postService.getPostDetail(postId, currentMemberId);
         return ResponseEntity.ok(
                 ApiResponse.success(Message.GET_POST_DETAIL_SUCCESS, postDetail)
@@ -55,7 +55,7 @@ public class PostController {
     public ResponseEntity<ApiResponse<PostIdResponseDto>> createPost(
             @Valid @ModelAttribute PostRequestDto postRequestDto) {
 
-        Member currentMember = memberService.getCurrentMember();
+        Member currentMember = authService.getCurrentMember();
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -70,7 +70,7 @@ public class PostController {
             @PathVariable Long postId,
             @Valid @ModelAttribute PostRequestDto postRequestDto) {
 
-        Long currentMemberId = memberService.getCurrentMember().getMemberId();
+        Long currentMemberId = authService.getCurrentMember().getMemberId();
 
         return ResponseEntity.ok(
                 ApiResponse.success(Message.PATCH_POST_SUCCESS,
@@ -82,7 +82,7 @@ public class PostController {
     @Parameter(name = "postId", description = "게시글 ID", example = "1", required = true)
     @DeleteMapping("/{postId}")
     public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long postId) {
-        Long currentMemberId = memberService.getCurrentMember().getMemberId();
+        Long currentMemberId = authService.getCurrentMember().getMemberId();
         postService.deletePost(postId, currentMemberId);
         return ResponseEntity.ok(
                 ApiResponse.success(Message.DELETE_POST_SUCCESS)

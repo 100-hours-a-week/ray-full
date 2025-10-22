@@ -18,8 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
-                        "/users/login",
-                        "/users/signup",
+                        "/auth/login",
+                        "/auth/signup",
                         "/users/email/duplicate-check",
                         "/users/nickname/duplicate-check",
                         "/users/getalluser",

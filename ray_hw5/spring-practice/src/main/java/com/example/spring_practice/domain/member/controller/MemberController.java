@@ -22,22 +22,6 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
 
-    @Operation(summary = "회원가입", description = "신규 회원을 등록합니다.")
-    @PostMapping(value = "/signup", consumes = "multipart/form-data")
-    public ResponseEntity<ApiResponse<Void>> signUp(@Valid @ModelAttribute SignUpRequestDto signUpRequestDto){
-        memberService.signUp(signUpRequestDto);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(ApiResponse.success(Message.SIGNUP_SUCCESS));
-    }
-
-    @Operation(summary = "로그인", description = "로그인을 진행합니다.")
-    @PostMapping("/login")
-    public ResponseEntity<ApiResponse<JwtTokenResponseDto>> login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
-        return ResponseEntity
-                .ok(ApiResponse.success(Message.LOGIN_SUCCESS, memberService.login(loginRequestDto)));
-    }
-
     @Operation(summary = "내 프로필 조회", description = "로그인한 사용자의 프로필 정보를 조회합니다.")
     @GetMapping("/my-profile")
     public ResponseEntity<ApiResponse<ProfileResponseDto>> getMyProfile(){

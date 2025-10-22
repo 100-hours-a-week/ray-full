@@ -4,6 +4,7 @@ import com.example.spring_practice.domain.comment.dto.CommentIdResponseDto;
 import com.example.spring_practice.domain.comment.dto.CommentRequestDto;
 import com.example.spring_practice.domain.comment.entity.Comment;
 import com.example.spring_practice.domain.comment.service.CommentService;
+import com.example.spring_practice.domain.member.service.AuthService;
 import com.example.spring_practice.domain.member.service.MemberService;
 import com.example.spring_practice.global.response.ApiResponse;
 import com.example.spring_practice.global.response.Message;
@@ -21,9 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/posts/{postId}/comments")
 public class CommentController {
-
+    private final AuthService authService;
     private final CommentService commentService;
-    private final MemberService memberService;
 
     @Operation(summary = "댓글 등록", description = "특정 게시글에 댓글을 등록합니다.")
     @Parameter(name = "postId", description = "게시글ID", example = "1", required = true)
@@ -32,7 +32,7 @@ public class CommentController {
             @PathVariable Long postId,
             @Valid @RequestBody CommentRequestDto commentRequestDto) {
 
-        Long currentMemberId = memberService.getCurrentMember().getMemberId();
+        Long currentMemberId = authService.getCurrentMember().getMemberId();
         CommentIdResponseDto response = commentService.createComment(postId, commentRequestDto, currentMemberId);
 
         return ResponseEntity
@@ -49,7 +49,7 @@ public class CommentController {
             @PathVariable Long commentId,
             @Valid @RequestBody CommentRequestDto commentRequestDto) {
 
-        Long currentMemberId = memberService.getCurrentMember().getMemberId();
+        Long currentMemberId = authService.getCurrentMember().getMemberId();
         CommentIdResponseDto response = commentService.updateComment(commentId, commentRequestDto, currentMemberId);
 
         return ResponseEntity.ok(
@@ -64,7 +64,7 @@ public class CommentController {
             @PathVariable Long postId,
             @PathVariable Long commentId) {
 
-        Long currentMemberId = memberService.getCurrentMember().getMemberId();
+        Long currentMemberId = authService.getCurrentMember().getMemberId();
         commentService.deleteComment(commentId, currentMemberId);
 
         return ResponseEntity.ok(
