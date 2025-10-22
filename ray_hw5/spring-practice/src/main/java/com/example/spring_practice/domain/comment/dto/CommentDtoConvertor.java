@@ -12,4 +12,8 @@ public class CommentDtoConvertor {
                 comment.getContent(),
                 comment.getMember().getMemberId().equals(currentMemberId));
     }
+
+    public static CommentIdResponseDto toCommentIdResponseDto(Long commentId){
+        return new CommentIdResponseDto(commentId);
+    }
 }

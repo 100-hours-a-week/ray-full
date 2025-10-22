@@ -29,7 +29,7 @@ public class PostService {
 
     public PostResponseDto getPostDetail(Long postId, Long currentMemberId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(RuntimeException::new);
         post.increaseViewCount();
 
         return PostDtoConvertor.toPostResponseDto(post, currentMemberId);
@@ -40,7 +40,7 @@ public class PostService {
         if(postRequestDto.getPostImage() != null){
             post.setImgUrl(imageService.saveImg(postRequestDto.getPostImage()));
         }
-        return new PostIdResponseDto(postRepository.save(post).getPostId());
+        return PostDtoConvertor.toPostIdResponseDto(postRepository.save(post).getPostId());
     }
 
     public PostIdResponseDto editPost(Long postId, PostRequestDto postRequestDto, Long currentMemberId) {
@@ -54,7 +54,7 @@ public class PostService {
         if(postRequestDto.getPostImage() != null){
             post.setImgUrl(imageService.saveImg(postRequestDto.getPostImage()));
         }
-        return new PostIdResponseDto(post.getPostId());
+        return PostDtoConvertor.toPostIdResponseDto(post.getPostId());
     }
 
     public void deletePost(Long postId, Long currentMemberId) {

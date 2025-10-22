@@ -2,6 +2,7 @@ package com.example.spring_practice.domain.member.service;
 
 import com.example.spring_practice.domain.member.dto.JwtTokenResponseDto;
 import com.example.spring_practice.domain.member.dto.LoginRequestDto;
+import com.example.spring_practice.domain.member.dto.MemberDtoConverter;
 import com.example.spring_practice.domain.member.dto.SignUpRequestDto;
 import com.example.spring_practice.domain.member.entity.Member;
 import com.example.spring_practice.domain.member.repository.MemberRepository;
@@ -39,7 +40,7 @@ public class AuthService {
         }
 
         String token = jwtUtil.generateToken(member.get().getEmail());
-        return new JwtTokenResponseDto(token);
+        return MemberDtoConverter.toJwtTokenResponseDto(token);
     }
 
     public Member getCurrentMember() {

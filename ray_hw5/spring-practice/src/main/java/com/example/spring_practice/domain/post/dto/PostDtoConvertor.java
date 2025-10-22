@@ -39,4 +39,8 @@ public class PostDtoConvertor {
                 toPostDetailsResponseDto(post, currentMemberId)
         );
     }
+
+    public static PostIdResponseDto toPostIdResponseDto(Long postId){
+        return new PostIdResponseDto(postId);
+    }
 }

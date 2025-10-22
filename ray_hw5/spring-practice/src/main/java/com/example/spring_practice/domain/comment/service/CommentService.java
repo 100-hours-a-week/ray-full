@@ -1,5 +1,6 @@
 package com.example.spring_practice.domain.comment.service;
 
+import com.example.spring_practice.domain.comment.dto.CommentDtoConvertor;
 import com.example.spring_practice.domain.comment.dto.CommentIdResponseDto;
 import com.example.spring_practice.domain.comment.dto.CommentRequestDto;
 import com.example.spring_practice.domain.comment.entity.Comment;
@@ -31,7 +32,7 @@ public class CommentService {
         Comment savedComment = commentRepository.save(comment);
         post.addComment(savedComment);
 
-        return new CommentIdResponseDto(savedComment.getCommentId());
+        return CommentDtoConvertor.toCommentIdResponseDto(savedComment.getCommentId());
     }
 
     public CommentIdResponseDto updateComment(Long commentId, CommentRequestDto dto, Long currentMemberId) {
@@ -44,7 +45,7 @@ public class CommentService {
 
         comment.setContent(dto.getContent());
 
-        return new CommentIdResponseDto(comment.getCommentId());
+        return CommentDtoConvertor.toCommentIdResponseDto(comment.getCommentId());
     }
 
     public void deleteComment(Long commentId, Long currentMemberId) {

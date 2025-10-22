@@ -38,10 +38,10 @@ public class MemberService {
     }
 
     public DuplicateCheckResponseDto emailDuplicateCheck(String email) {
-        return new DuplicateCheckResponseDto(memberRepository.existsByEmail(email));
+        return MemberDtoConverter.toDuplicateCheckResponseDto(memberRepository.existsByEmail(email));
     }
 
     public DuplicateCheckResponseDto passwordDuplicateCheck(String nickname) {
-        return new DuplicateCheckResponseDto(memberRepository.existsByNickname(nickname));
+        return MemberDtoConverter.toDuplicateCheckResponseDto(memberRepository.existsByNickname(nickname));
     }
 }
