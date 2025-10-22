@@ -5,6 +5,8 @@ import com.example.spring_practice.domain.post.dto.*;
 import com.example.spring_practice.domain.post.entity.Post;
 import com.example.spring_practice.domain.post.repository.PostRepository;
 import com.example.spring_practice.domain.shared.ImageService;
+import com.example.spring_practice.global.response.CustomException;
+import com.example.spring_practice.global.response.ErrorCode;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +30,8 @@ public class PostService {
 
     public PostResponseDto getPostDetail(Long postId, Long currentMemberId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
         post.increaseViewCount();
-
         return postDtoConverter.toPostResponseDto(post, currentMemberId);
     }
 
@@ -44,9 +45,9 @@ public class PostService {
 
     public PostIdResponseDto editPost(Long postId, PostRequestDto postRequestDto, Long currentMemberId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
         if(!post.getMember().getMemberId().equals(currentMemberId)) {
-            throw new RuntimeException();
+            throw new CustomException(ErrorCode.NO_PERMISSION);
         }
         post.setTitle(postRequestDto.getTitle());
         post.setContent(postRequestDto.getContent());
@@ -58,9 +59,9 @@ public class PostService {
 
     public void deletePost(Long postId, Long currentMemberId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
         if(!post.getMember().getMemberId().equals(currentMemberId)) {
-            throw new RuntimeException();
+            throw new CustomException(ErrorCode.NO_PERMISSION);
         }
         postRepository.delete(post);
     }

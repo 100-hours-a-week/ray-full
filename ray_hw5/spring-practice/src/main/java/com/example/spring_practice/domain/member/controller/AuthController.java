@@ -4,6 +4,7 @@ import com.example.spring_practice.domain.member.dto.JwtTokenResponseDto;
 import com.example.spring_practice.domain.member.dto.LoginRequestDto;
 import com.example.spring_practice.domain.member.dto.SignUpRequestDto;
 import com.example.spring_practice.domain.member.service.AuthService;
+import com.example.spring_practice.domain.member.service.MemberService;
 import com.example.spring_practice.global.response.ApiResponse;
 import com.example.spring_practice.global.response.Message;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,11 +19,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
+    private final MemberService memberService;
 
     @Operation(summary = "회원가입", description = "신규 회원을 등록합니다.")
     @PostMapping(value = "/signup", consumes = "multipart/form-data")
     public ResponseEntity<ApiResponse<Void>> signUp(@Valid @ModelAttribute SignUpRequestDto signUpRequestDto){
-        authService.signUp(signUpRequestDto);
+        memberService.signUp(signUpRequestDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(ApiResponse.success(Message.SIGNUP_SUCCESS));

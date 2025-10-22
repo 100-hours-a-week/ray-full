@@ -7,40 +7,29 @@ import com.example.spring_practice.domain.member.dto.SignUpRequestDto;
 import com.example.spring_practice.domain.member.entity.Member;
 import com.example.spring_practice.domain.member.repository.MemberRepository;
 import com.example.spring_practice.domain.shared.ImageService;
+import com.example.spring_practice.global.response.CustomException;
+import com.example.spring_practice.global.response.ErrorCode;
 import com.example.spring_practice.global.security.AuthContext;
 import com.example.spring_practice.global.security.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class AuthService {
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
-    private final ImageService imageService;
     private final MemberDtoConverter memberDtoConverter;
-    public void signUp(SignUpRequestDto signUpRequestDto) {
-        Member member = new Member(signUpRequestDto.getEmail(), signUpRequestDto.getPassword(), signUpRequestDto.getNickname());
-        if(signUpRequestDto.getProfileImage()!=null){
-            member.setProfileImgUrl(imageService.saveImg(signUpRequestDto.getProfileImage()));
-        }
-        memberRepository.save(member);
-    }
 
     public JwtTokenResponseDto login(LoginRequestDto loginRequestDto) {
-        Optional<Member> member = memberRepository.findByEmail(loginRequestDto.getEmail());
+        Member member = memberRepository.findByEmail(loginRequestDto.getEmail())
+                .orElseThrow(()->new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-        if (member.isEmpty()) {
-            throw new RuntimeException("미회원가입");
+        if (!member.getPassword().equals(loginRequestDto.getPassword())) {
+            throw new CustomException(ErrorCode.INVALID_PASSWORD);
         }
 
-        if (!member.get().getPassword().equals(loginRequestDto.getPassword())) {
-            throw new RuntimeException("비밀번호 틀림");
-        }
-
-        String token = jwtUtil.generateToken(member.get().getEmail());
+        String token = jwtUtil.generateToken(member.getEmail());
         return memberDtoConverter.toJwtTokenResponseDto(token);
     }
 
@@ -48,16 +37,11 @@ public class AuthService {
         String email = AuthContext.getCurrentUserEmail();
 
         if (email == null) {
-            throw new RuntimeException("로그인이 필요합니다");
+            throw new CustomException(ErrorCode.UNAUTHORIZED);
         }
 
-        Optional<Member> member = memberRepository.findByEmail(email);
-
-        if (member.isEmpty()) {
-            throw new RuntimeException("사용자를 찾을 수 없습니다");
-        }
-
-        return member.get();
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
     }
 
 }

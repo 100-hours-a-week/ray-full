@@ -1,7 +1,6 @@
 package com.example.spring_practice.domain.member.controller;
 
 import com.example.spring_practice.domain.member.dto.*;
-import com.example.spring_practice.domain.member.entity.Member;
 import com.example.spring_practice.domain.member.service.MemberService;
 import com.example.spring_practice.global.response.ApiResponse;
 import com.example.spring_practice.global.response.Message;
@@ -9,12 +8,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -56,6 +51,6 @@ public class MemberController {
     @GetMapping("/nickname/duplicate-check")
     public ResponseEntity<ApiResponse<DuplicateCheckResponseDto>> passwordDuplicateCheck(@RequestParam("nickname")String nickname){
         return ResponseEntity.ok(ApiResponse.success(
-                Message.CHECK_DUPLICATE_NICKNAME_SUCCESS, memberService.passwordDuplicateCheck(nickname)));
+                Message.CHECK_DUPLICATE_NICKNAME_SUCCESS, memberService.nicknameDuplicateCheck(nickname)));
     }
 }

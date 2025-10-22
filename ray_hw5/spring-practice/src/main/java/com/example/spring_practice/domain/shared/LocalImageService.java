@@ -1,5 +1,7 @@
 package com.example.spring_practice.domain.shared;
 
+import com.example.spring_practice.global.response.CustomException;
+import com.example.spring_practice.global.response.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -46,12 +48,10 @@ public class LocalImageService implements ImageService {
             Path destinationPath = Paths.get(uploadPath, filePath);
             file.transferTo(destinationPath.toFile());
 
-            log.info("이미지 저장 완료: {}", filePath);
             return filePath;
 
         } catch (IOException e) {
-            log.error("이미지 저장 실패", e);
-            throw new RuntimeException("이미지 저장에 실패했습니다", e);
+            throw new CustomException(ErrorCode.IMAGE_UPLOAD_FAILED);
         }
     }
 

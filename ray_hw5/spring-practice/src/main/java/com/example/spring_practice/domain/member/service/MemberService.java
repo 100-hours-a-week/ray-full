@@ -4,14 +4,10 @@ import com.example.spring_practice.domain.member.dto.*;
 import com.example.spring_practice.domain.member.entity.Member;
 import com.example.spring_practice.domain.member.repository.MemberRepository;
 import com.example.spring_practice.domain.shared.ImageService;
-import com.example.spring_practice.global.security.AuthContext;
-import com.example.spring_practice.global.security.JwtUtil;
+import com.example.spring_practice.global.response.CustomException;
+import com.example.spring_practice.global.response.ErrorCode;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -20,6 +16,20 @@ public class MemberService {
     private final ImageService imageService;
     private final AuthService authService;
     private final MemberDtoConverter memberDtoConverter;
+
+    public void signUp(SignUpRequestDto signUpRequestDto) {
+        if(emailDuplicateCheck(signUpRequestDto.getEmail()).isDuplicated()){
+            throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
+        }
+        if(nicknameDuplicateCheck(signUpRequestDto.getNickname()).isDuplicated()){
+            throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
+        }
+        Member member = new Member(signUpRequestDto.getEmail(), signUpRequestDto.getPassword(), signUpRequestDto.getNickname());
+        if(signUpRequestDto.getProfileImage()!=null){
+            member.setProfileImgUrl(imageService.saveImg(signUpRequestDto.getProfileImage()));
+        }
+        memberRepository.save(member);
+    }
 
     public ProfileResponseDto getMyProfile() {
         return memberDtoConverter.toProfileResponseDto(authService.getCurrentMember());
@@ -42,7 +52,7 @@ public class MemberService {
         return memberDtoConverter.toDuplicateCheckResponseDto(memberRepository.existsByEmail(email));
     }
 
-    public DuplicateCheckResponseDto passwordDuplicateCheck(String nickname) {
+    public DuplicateCheckResponseDto nicknameDuplicateCheck(String nickname) {
         return memberDtoConverter.toDuplicateCheckResponseDto(memberRepository.existsByNickname(nickname));
     }
 }

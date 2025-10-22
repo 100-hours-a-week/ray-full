@@ -9,6 +9,8 @@ import com.example.spring_practice.domain.member.entity.Member;
 import com.example.spring_practice.domain.member.repository.MemberRepository;
 import com.example.spring_practice.domain.post.entity.Post;
 import com.example.spring_practice.domain.post.repository.PostRepository;
+import com.example.spring_practice.global.response.CustomException;
+import com.example.spring_practice.global.response.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +26,10 @@ public class CommentService {
 
     public CommentIdResponseDto createComment(Long postId, CommentRequestDto commentRequestDto, Long currentMemberId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("post not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
         Member member = memberRepository.findById(currentMemberId)
-                .orElseThrow(() -> new RuntimeException("member not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
 
         Comment comment = new Comment(commentRequestDto, member, post);
@@ -39,10 +41,10 @@ public class CommentService {
 
     public CommentIdResponseDto updateComment(Long commentId, CommentRequestDto dto, Long currentMemberId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new RuntimeException("comment not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 
         if (!comment.getMember().getMemberId().equals(currentMemberId)) {
-            throw new RuntimeException("unauthorized user");
+            throw new CustomException(ErrorCode.NO_PERMISSION);
         }
 
         comment.setContent(dto.getContent());
@@ -52,10 +54,10 @@ public class CommentService {
 
     public void deleteComment(Long commentId, Long currentMemberId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new RuntimeException("comment not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 
         if (!comment.getMember().getMemberId().equals(currentMemberId)) {
-            throw new RuntimeException("unauthorized user");
+            throw new CustomException(ErrorCode.NO_PERMISSION);
         }
 
         Post post = comment.getPost();

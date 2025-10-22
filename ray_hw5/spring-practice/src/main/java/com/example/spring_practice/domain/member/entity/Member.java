@@ -5,6 +5,7 @@ import com.example.spring_practice.domain.post.entity.Post;
 import com.example.spring_practice.domain.post.entity.PostLike;
 import lombok.Getter;
 
+import javax.crypto.interfaces.PBEKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,4 +35,5 @@ public class Member {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
 }
