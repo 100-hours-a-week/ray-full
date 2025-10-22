@@ -1,3 +1,8 @@
+file:
+  upload:
+    path: /Users/jungeun/spring-practice-uploads
+    url: http://localhost:8080/images
+
 jwt:
   secret: qeofjimqrpijbqniperjwdfkomfevnjgipawfmkoerjioawfdkslkejvoi9519845146545648ewf654
   expiration: 86400000
