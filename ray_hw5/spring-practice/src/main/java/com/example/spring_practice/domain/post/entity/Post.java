@@ -26,7 +26,7 @@ public class Post {
 
     public void setPostId(Long id){
         if( this.postId != null || id == null || id < 0){
-            throw new CustomException(ErrorCode.BAD_ID_SET_TRY);
+            throw new CustomException(ErrorCode.SERVER_ERROR);
         }
 
         this.postId = id;

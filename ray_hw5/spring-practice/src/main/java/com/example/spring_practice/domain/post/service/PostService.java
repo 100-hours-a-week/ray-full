@@ -46,9 +46,10 @@ public class PostService {
     public PostIdResponseDto editPost(Long postId, PostRequestDto postRequestDto, Long currentMemberId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
-        if(!post.getMember().getMemberId().equals(currentMemberId)) {
-            throw new CustomException(ErrorCode.NO_PERMISSION);
-        }
+
+        // 권한 확인
+        checkPostPermission(post, currentMemberId);
+
         post.updateTitle(postRequestDto.getTitle());
         post.updateContent(postRequestDto.getContent());
         if(postRequestDto.getPostImage() != null){
@@ -60,9 +61,16 @@ public class PostService {
     public void deletePost(Long postId, Long currentMemberId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+
+        // 권한 확인
+        checkPostPermission(post, currentMemberId);
+
+        postRepository.delete(post);
+    }
+
+    private void checkPostPermission(Post post, Long currentMemberId) {
         if(!post.getMember().getMemberId().equals(currentMemberId)) {
             throw new CustomException(ErrorCode.NO_PERMISSION);
         }
-        postRepository.delete(post);
     }
 }

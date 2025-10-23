@@ -36,7 +36,8 @@ public class MemberService {
     }
 
     public void editPassword(String password) {
-        authService.getCurrentMember().changePassword(password);
+
+        authService.getCurrentMember().editPassword(password);
     }
 
     public void editProfile(EditProfileRequestDto editProfileRequestDto) {

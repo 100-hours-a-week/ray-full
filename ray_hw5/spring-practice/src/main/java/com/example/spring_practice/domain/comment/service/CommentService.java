@@ -43,9 +43,8 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 
-        if (!comment.getMember().getMemberId().equals(currentMemberId)) {
-            throw new CustomException(ErrorCode.NO_PERMISSION);
-        }
+        // 권한체크
+        checkCommentPermission(comment, currentMemberId);
 
         comment.updateContent(dto.getContent());
 
@@ -56,9 +55,8 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 
-        if (!comment.getMember().getMemberId().equals(currentMemberId)) {
-            throw new CustomException(ErrorCode.NO_PERMISSION);
-        }
+        // 권한체크
+        checkCommentPermission(comment, currentMemberId);
 
         Post post = comment.getPost();
         post.deleteComment(comment);
@@ -66,7 +64,9 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    public List<Comment> getComments() {
-        return commentRepository.findAll();
+    public void checkCommentPermission(Comment comment, Long currentMemberId) {
+        if (!comment.getMember().getMemberId().equals(currentMemberId)) {
+            throw new CustomException(ErrorCode.NO_PERMISSION);
+        }
     }
 }

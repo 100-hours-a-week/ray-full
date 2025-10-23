@@ -70,10 +70,4 @@ public class CommentController {
         return ResponseEntity.ok(
                 ApiResponse.success(Message.DELETE_COMMENT_SUCCESS));
     }
-
-    @GetMapping()
-    public ResponseEntity<ApiResponse<List<Comment>>> getComments(){
-        return ResponseEntity.ok(
-                ApiResponse.success("", commentService.getComments()));
-    }
 }

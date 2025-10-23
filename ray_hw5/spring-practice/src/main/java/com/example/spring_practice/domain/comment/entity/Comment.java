@@ -30,7 +30,7 @@ public class Comment {
     }
     public void setCommentId(Long id){
         if( this.commentId != null || id == null || id < 0){
-            throw new CustomException(ErrorCode.BAD_ID_SET_TRY);
+            throw new CustomException(ErrorCode.SERVER_ERROR);
         }
         this.commentId = id;
     }

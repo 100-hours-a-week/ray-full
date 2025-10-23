@@ -12,8 +12,9 @@ public enum ErrorCode {
     DUPLICATE_EMAIL(HttpStatus.CONFLICT, "중복된 아이디 입니다."),
     DUPLICATE_NICKNAME(HttpStatus.CONFLICT, "중복된 닉네임 입니다."),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST,"비밀번호가 올바르지 않습니다."),
+    INVALID_PASSWORD_FORM(HttpStatus.BAD_REQUEST,"비밀번호는 8자 이상 20자 이하이며, 대문자, 소문자, 숫자, 특수문자를 각각 최소 1개 포함해야 합니다."),
 
-    BAD_ID_SET_TRY(HttpStatus.BAD_REQUEST, "잘못된 ID 설정 시도입니다."),
+    SERVER_ERROR(HttpStatus.BAD_REQUEST, "서버 내부 오류입니다."),
 
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다."),
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다."),
