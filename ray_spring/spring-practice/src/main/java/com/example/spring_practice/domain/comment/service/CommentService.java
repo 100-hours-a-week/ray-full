@@ -13,6 +13,7 @@ import com.example.spring_practice.global.response.CustomException;
 import com.example.spring_practice.global.response.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class CommentService {
     private final MemberRepository memberRepository;
     private final CommentDtoConverter commentDtoConverter;
 
+    @Transactional
     public CommentIdResponseDto createComment(Long postId, CommentRequestDto commentRequestDto, Long currentMemberId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
@@ -34,11 +36,11 @@ public class CommentService {
 
         Comment comment = new Comment(commentRequestDto, member, post);
         Comment savedComment = commentRepository.save(comment);
-        post.addComment(savedComment);
 
         return commentDtoConverter.toCommentIdResponseDto(savedComment.getCommentId());
     }
 
+    @Transactional
     public CommentIdResponseDto updateComment(Long commentId, CommentRequestDto dto, Long currentMemberId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
@@ -51,6 +53,7 @@ public class CommentService {
         return commentDtoConverter.toCommentIdResponseDto(comment.getCommentId());
     }
 
+    @Transactional
     public void deleteComment(Long commentId, Long currentMemberId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
@@ -59,7 +62,6 @@ public class CommentService {
         checkCommentPermission(comment, currentMemberId);
 
         Post post = comment.getPost();
-        post.deleteComment(comment);
 
         commentRepository.delete(comment);
     }

@@ -8,13 +8,15 @@ import com.example.spring_practice.domain.shared.ImageService;
 import com.example.spring_practice.global.response.CustomException;
 import com.example.spring_practice.global.response.ErrorCode;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
     private final ImageService imageService;
@@ -28,6 +30,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public PostResponseDto getPostDetail(Long postId, Long currentMemberId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));

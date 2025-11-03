@@ -5,32 +5,48 @@ import com.example.spring_practice.domain.member.entity.Member;
 import com.example.spring_practice.domain.post.dto.PostRequestDto;
 import com.example.spring_practice.global.response.CustomException;
 import com.example.spring_practice.global.response.ErrorCode;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
+
     private String title;
+
     private String content;
+
+    @CreationTimestamp
     private LocalDateTime createdAt;
+
     private boolean deleted = false;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
     private Member member;
-    private List<Comment> commentList = new ArrayList<>();
-    private List<PostLike> postLikeList = new ArrayList<>();
+
     private long viewCount = 0;
+
     private String imgUrl;
 
-    public void setPostId(Long id){
-        if( this.postId != null || id == null || id < 0){
-            throw new CustomException(ErrorCode.SERVER_ERROR);
-        }
+    @OneToMany(mappedBy = "post")
+    private List<Comment> commentList = new ArrayList<>();
 
-        this.postId = id;
-    }
+    @OneToMany(mappedBy = "post")
+    private List<PostLike> postLikeList = new ArrayList<>();
+
+
     public void updateTitle(String title){
         this.title = title;
     }
@@ -45,18 +61,9 @@ public class Post {
         this.viewCount++;
     }
 
-    public void addComment(Comment comment) {
-        this.commentList.add(comment);
-    }
-
-    public void deleteComment(Comment comment){
-        this.commentList.remove(comment);
-    }
-
     public Post(PostRequestDto postRequestDto, Member member){
         this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getContent();
-        this.createdAt = LocalDateTime.now();
         this.member = member;
     }
 }
