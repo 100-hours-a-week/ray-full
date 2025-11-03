@@ -23,6 +23,7 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final MemberDtoConverter memberDtoConverter;
 
+    @Transactional
     public JwtTokenResponseDto login(LoginRequestDto loginRequestDto) {
         Member member = memberRepository.findByEmail(loginRequestDto.getEmail())
                 .orElseThrow(()->new CustomException(ErrorCode.MEMBER_NOT_FOUND));

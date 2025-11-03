@@ -30,6 +30,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public PostResponseDto getPostDetail(Long postId, Long currentMemberId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));

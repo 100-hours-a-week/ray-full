@@ -37,11 +37,13 @@ public class MemberService {
         return memberDtoConverter.toProfileResponseDto(authService.getCurrentMember());
     }
 
+    @Transactional
     public void editPassword(String password) {
 
         authService.getCurrentMember().editPassword(password);
     }
 
+    @Transactional
     public void editProfile(EditProfileRequestDto editProfileRequestDto) {
         if(editProfileRequestDto.getProfileImage() != null){
             authService.getCurrentMember().updateImageUrl(imageService.saveImg(editProfileRequestDto.getProfileImage()));
