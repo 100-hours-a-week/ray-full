@@ -23,7 +23,7 @@ public class PostService {
     private final PostDtoConverter postDtoConverter;
 
     public List<PostSummaryResponseDto> getPostList() {
-        List<Post> posts = postRepository.findAll();
+        List<Post> posts = postRepository.findAllWithMember();
 
         return posts.stream()
                 .map(postDtoConverter::toPostSummaryResponseDto)
