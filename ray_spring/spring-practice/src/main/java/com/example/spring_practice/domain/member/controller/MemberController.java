@@ -49,7 +49,7 @@ public class MemberController {
     @Operation(summary = "닉네임 중복 체크", description = "특정 닉네임이 이미 등록된 닉네임인지 확인합니다.")
     @Parameter(name = "nickname", description = "중복 확인할 닉네임", required = true)
     @GetMapping("/nickname/duplicate-check")
-    public ResponseEntity<ApiResponse<DuplicateCheckResponseDto>> passwordDuplicateCheck(@RequestParam("nickname")String nickname){
+    public ResponseEntity<ApiResponse<DuplicateCheckResponseDto>> nicknameDuplicateCheck(@RequestParam("nickname")String nickname){
         return ResponseEntity.ok(ApiResponse.success(
                 Message.CHECK_DUPLICATE_NICKNAME_SUCCESS, memberService.nicknameDuplicateCheck(nickname)));
     }
