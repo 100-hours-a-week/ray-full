@@ -1,3 +1,21 @@
+spring:
+  application:
+    name: spring-practice
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/ktb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password:
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: false
+
 file:
   upload:
     path: /Users/jungeun/spring-practice-uploads
@@ -6,3 +24,4 @@ file:
 jwt:
   secret: qeofjimqrpijbqniperjwdfkomfevnjgipawfmkoerjioawfdkslkejvoi9519845146545648ewf654
   expiration: 86400000
+
