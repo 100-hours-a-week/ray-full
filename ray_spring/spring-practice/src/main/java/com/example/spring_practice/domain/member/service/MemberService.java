@@ -7,10 +7,12 @@ import com.example.spring_practice.domain.shared.ImageService;
 import com.example.spring_practice.global.response.CustomException;
 import com.example.spring_practice.global.response.ErrorCode;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
     private final ImageService imageService;

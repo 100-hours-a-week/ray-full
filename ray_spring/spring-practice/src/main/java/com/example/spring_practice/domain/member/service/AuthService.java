@@ -12,10 +12,12 @@ import com.example.spring_practice.global.response.ErrorCode;
 import com.example.spring_practice.global.security.AuthContext;
 import com.example.spring_practice.global.security.JwtUtil;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthService {
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
