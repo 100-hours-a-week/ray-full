@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -41,9 +42,11 @@ public class Post {
     private String imgUrl;
 
     @OneToMany(mappedBy = "post")
+    @BatchSize(size = 10)
     private List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
+    @BatchSize(size = 10)
     private List<PostLike> postLikeList = new ArrayList<>();
 
 
