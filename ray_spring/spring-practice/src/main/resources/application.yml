@@ -25,3 +25,7 @@ jwt:
   secret: qeofjimqrpijbqniperjwdfkomfevnjgipawfmkoerjioawfdkslkejvoi9519845146545648ewf654
   expiration: 86400000
 
+logging:
+  level:
+    org.hibernate.SQL: off
+    org.hibernate.orm.jdbc.bind: off
