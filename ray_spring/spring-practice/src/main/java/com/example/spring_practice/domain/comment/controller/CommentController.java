@@ -2,6 +2,7 @@ package com.example.spring_practice.domain.comment.controller;
 
 import com.example.spring_practice.domain.comment.dto.CommentIdResponseDto;
 import com.example.spring_practice.domain.comment.dto.CommentRequestDto;
+import com.example.spring_practice.domain.comment.dto.CommentResponseDto;
 import com.example.spring_practice.domain.comment.entity.Comment;
 import com.example.spring_practice.domain.comment.service.CommentService;
 import com.example.spring_practice.domain.member.service.AuthService;
@@ -39,6 +40,21 @@ public class CommentController {
                 .status(HttpStatus.CREATED)
                 .body(ApiResponse.success(Message.POST_COMMENT_SUCCESS, response));
     }
+
+    @Operation(summary = "댓글 불러오기", description = "특정 게시글에 대한 댓글을 불러옵니다.")
+    @Parameter(name = "postId", description = "게시글ID", example = "1", required = true)
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<CommentResponseDto>>> createComment(@PathVariable Long postId) {
+
+        Long currentMemberId = authService.getCurrentMember().getMemberId();
+        List<CommentResponseDto> response = commentService.getComments(postId, currentMemberId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(Message.POST_COMMENT_SUCCESS, response));
+    }
+
+
 
     @Operation(summary = "댓글 수정", description = "특정 댓글을 수정합니다.")
     @Parameter(name = "postId", description = "게시글ID", example = "1", required = true)

@@ -2,7 +2,6 @@ package com.example.spring_practice.domain.post.controller;
 
 import com.example.spring_practice.domain.member.entity.Member;
 import com.example.spring_practice.domain.member.service.AuthService;
-import com.example.spring_practice.domain.member.service.MemberService;
 import com.example.spring_practice.domain.post.dto.PostIdResponseDto;
 import com.example.spring_practice.domain.post.dto.PostRequestDto;
 import com.example.spring_practice.domain.post.dto.PostResponseDto;
@@ -12,19 +11,17 @@ import com.example.spring_practice.global.response.ApiResponse;
 import com.example.spring_practice.global.response.Message;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/post")
+@RequestMapping("/posts")
 public class PostController {
     private final AuthService authService;
     private final PostService postService;
@@ -89,4 +86,23 @@ public class PostController {
         );
     }
 
+    @Operation(summary = "게시물 좋아요", description = "특정 게시글에 좋아요를 등록합니다.")
+    @PostMapping("/{postId}/like")
+    public ResponseEntity<ApiResponse<Void>> createPostLike(@PathVariable Long postId) {
+
+        Member currentMember = authService.getCurrentMember();
+        postService.createPostLike(postId, currentMember);
+
+        return ResponseEntity.ok(ApiResponse.success(Message.POST_LIKE_SUCCESS));
+    }
+
+    @Operation(summary = "게시물 좋아요 취소", description = "특정 게시글에 좋아요를 취소합니다.")
+    @DeleteMapping("/{postId}/like")
+    public ResponseEntity<ApiResponse<Void>> deletePostLike(@PathVariable Long postId) {
+
+        Member currentMember = authService.getCurrentMember();
+        postService.deletePostLike(postId, currentMember.getMemberId());
+
+        return ResponseEntity.ok(ApiResponse.success(Message.POST_UNLIKE_SUCCESS));
+    }
 }
