@@ -17,6 +17,8 @@ public class PostSummaryResponseDto {
     private LocalDateTime postedTime;
     @Schema(description = "게시글 작성자 닉네임", example = "김뽀삐")
     private String author;
+    @Schema(description = "게시글 작성자 프로필", example = "https://sampleimge")
+    private String authorProfileImg;
     @Schema(description = "게시글 좋아요수", example = "5")
     private long likeCount;
     @Schema(description = "게시글 조회수", example = "5")

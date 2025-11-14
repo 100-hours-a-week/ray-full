@@ -26,6 +26,7 @@ public class Post {
 
     private String title;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String content;
 
     @CreationTimestamp
@@ -41,11 +42,11 @@ public class Post {
 
     private String imgUrl;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @BatchSize(size = 10)
     private List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @BatchSize(size = 10)
     private List<PostLike> postLikeList = new ArrayList<>();
 

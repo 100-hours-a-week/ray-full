@@ -3,6 +3,7 @@ package com.example.spring_practice.domain.comment.service;
 import com.example.spring_practice.domain.comment.dto.CommentDtoConverter;
 import com.example.spring_practice.domain.comment.dto.CommentIdResponseDto;
 import com.example.spring_practice.domain.comment.dto.CommentRequestDto;
+import com.example.spring_practice.domain.comment.dto.CommentResponseDto;
 import com.example.spring_practice.domain.comment.entity.Comment;
 import com.example.spring_practice.domain.comment.repository.CommentRepository;
 import com.example.spring_practice.domain.member.entity.Member;
@@ -15,7 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -70,5 +73,14 @@ public class CommentService {
         if (!comment.getMember().getMemberId().equals(currentMemberId)) {
             throw new CustomException(ErrorCode.NO_PERMISSION);
         }
+    }
+
+    public List<CommentResponseDto> getComments(Long postId, Long currentMemberId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+        List<CommentResponseDto> commentList = new ArrayList<>();
+        for (Comment c : post.getCommentList()){
+            commentList.add(commentDtoConverter.toCommentResponseDto(c, currentMemberId));
+        }
+        return commentList;
     }
 }

@@ -22,26 +22,23 @@ public class PostDtoConverter {
                 post.getTitle(),
                 post.getCreatedAt(),
                 post.getMember().getNickname(),
+                imageService.getFullImgUrl(post.getMember().getProfileImgUrl()),
                 post.getPostLikeList().size(),
                 post.getViewCount(),
                 post.getCommentList().size());
     }
-    public PostDetailsResponseDto toPostDetailsResponseDto(Post post, Long currentMemberId){
-        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-        for (Comment comment :post.getCommentList()) {
-            commentResponseDtoList.add(commentDtoConverter.toCommentResponseDto(comment, currentMemberId));
-        }
+    public PostDetailsResponseDto toPostDetailsResponseDto(Post post, Long currentMemberId, boolean isPostLiked){
         return new PostDetailsResponseDto(
                 imageService.getFullImgUrl(post.getImgUrl()),
                 post.getContent(),
                 post.getMember().getMemberId().equals(currentMemberId),
-                commentResponseDtoList
+                isPostLiked
         );
     }
-    public PostResponseDto toPostResponseDto(Post post, Long currentMemberId){
+    public PostResponseDto toPostResponseDto(Post post, Long currentMemberId, boolean isPostLiked){
         return new PostResponseDto(
                 toPostSummaryResponseDto(post),
-                toPostDetailsResponseDto(post, currentMemberId)
+                toPostDetailsResponseDto(post, currentMemberId, isPostLiked)
         );
     }
 
