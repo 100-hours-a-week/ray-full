@@ -29,12 +29,12 @@ public class CommentController {
     @Operation(summary = "댓글 등록", description = "특정 게시글에 댓글을 등록합니다.")
     @Parameter(name = "postId", description = "게시글ID", example = "1", required = true)
     @PostMapping
-    public ResponseEntity<ApiResponse<CommentIdResponseDto>> createComment(
+    public ResponseEntity<ApiResponse<CommentResponseDto>> createComment(
             @PathVariable Long postId,
             @Valid @RequestBody CommentRequestDto commentRequestDto) {
 
         Long currentMemberId = authService.getCurrentMember().getMemberId();
-        CommentIdResponseDto response = commentService.createComment(postId, commentRequestDto, currentMemberId);
+        CommentResponseDto response = commentService.createComment(postId, commentRequestDto, currentMemberId);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
