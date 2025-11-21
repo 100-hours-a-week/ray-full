@@ -29,7 +29,7 @@ public class CommentService {
     private final CommentDtoConverter commentDtoConverter;
 
     @Transactional
-    public CommentIdResponseDto createComment(Long postId, CommentRequestDto commentRequestDto, Long currentMemberId) {
+    public CommentResponseDto createComment(Long postId, CommentRequestDto commentRequestDto, Long currentMemberId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
@@ -40,7 +40,7 @@ public class CommentService {
         Comment comment = new Comment(commentRequestDto, member, post);
         Comment savedComment = commentRepository.save(comment);
 
-        return commentDtoConverter.toCommentIdResponseDto(savedComment.getCommentId());
+        return commentDtoConverter.toCommentResponseDto(savedComment, currentMemberId);
     }
 
     @Transactional

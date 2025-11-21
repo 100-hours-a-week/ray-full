@@ -33,7 +33,7 @@ public class MemberController {
     @Operation(summary = "비밀번호 변경", description = "로그인한 사용자의 비밀번호를 변경합니다.")
     @Parameter(name = "password", description = "변경할 비밀번호", required = true)
     @PatchMapping("/password")
-    public ResponseEntity<ApiResponse<Void>> editPassword(@RequestParam("password") String password){
+    public ResponseEntity<ApiResponse<Void>> editPassword(@RequestBody EditPasswordRequestDto password){
         memberService.editPassword(password);
         return ResponseEntity.ok(ApiResponse.success(Message.EDIT_PASSWORD_SUCCESS));
     }

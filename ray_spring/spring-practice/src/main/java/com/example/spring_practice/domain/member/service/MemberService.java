@@ -38,9 +38,8 @@ public class MemberService {
     }
 
     @Transactional
-    public void editPassword(String password) {
-
-        authService.getCurrentMember().editPassword(password);
+    public void editPassword(EditPasswordRequestDto password) {
+        authService.getCurrentMember().editPassword(password.getPassword());
     }
 
     @Transactional
